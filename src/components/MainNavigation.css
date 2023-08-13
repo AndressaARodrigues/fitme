@@ -1,0 +1,163 @@
+.header {
+    /*width: 1520px;*/
+    /*max-width: 60rem;
+    margin: auto;*/
+    padding: 3rem 8rem;
+    /*display: flex;*/
+  }
+  
+  .header nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+  }
+  
+  .header nav img {
+    width: 105px;
+    height: 34px;
+  }
+  
+  .list {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .list a {
+    text-decoration: none;
+    color: var(--color-primary-400);
+  }
+  
+  .list a:hover,
+  .list a.active {
+    color: var(--color-primary-800);
+  }
+  
+  
+  /* menu hamburguer */
+  .menu-button {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 20px;
+    height: 16px;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+    margin: 10px 0;
+    background: none;
+    margin-left: auto; /* Adicione esta linha */
+  }
+  
+  .menu-line {
+    width: 20px;
+    height: 2px;
+    background-color: #000;
+  }
+  
+  .list.open {
+    display: block;
+    position: absolute;
+    top: 80px; 
+    right: 2rem; 
+    background-color: white;
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+  }
+  
+  /* barra de pesquisa */
+  .list .search-bar {
+    height: 15px;
+    border: 1px solid #808080;
+    border-radius: 10px;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    margin-right: auto;
+  }
+  
+  .list .search-bar input {
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 14px;
+    width:300px;
+  }
+  
+  .list .search-button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 0.25rem;
+    font-size: 18px;
+    color: #555;
+  }
+  
+  .list .search-button i {
+    text-decoration: none;
+  }
+  
+  /* botão de entrar */
+  .list .sign-in-button {
+    background-color: black;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  /* botão de sacola de compras */
+  
+  .cart-icon-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #555;
+    width: 100%; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+  }
+  
+  
+  @media (max-width: 1107px) {
+    .header{
+      padding: 2rem 4rem;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .header{
+      padding: 2rem 2rem;
+    }
+  }
+  
+  @media (max-width: 1000px) {
+    .list {
+      display: none;
+    }
+  
+    .menu-button {
+      display: flex;
+    }
+  
+    .menu-button.open .menu-line:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+  
+    .menu-button.open .menu-line:nth-child(2) {
+      opacity: 0;
+    }
+  
+    .menu-button.open .menu-line:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+  }
+  

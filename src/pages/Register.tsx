@@ -1,9 +1,10 @@
-const Register: React.FC = () => {
+import Footer from '../components/Footer';
 
+const Register: React.FC = () => {
   return (
-    <div>
-     
-    </div>
+    <>
+      <Footer />
+    </>
   );
 };
 
