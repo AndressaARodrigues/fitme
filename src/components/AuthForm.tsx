@@ -56,6 +56,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ title, successMessage, onSubmit, fi
           </form>
         )}
       </div>
+      
     </>
   );
 };

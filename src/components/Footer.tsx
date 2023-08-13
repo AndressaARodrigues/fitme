@@ -7,6 +7,7 @@ import Icontt from '../assets/twitter icon.png';
 
 const Footer = () => {
   return (
+  <>
     <footer>
       <div className='footer'>
         <div className='footer-column'>
@@ -35,7 +36,8 @@ const Footer = () => {
              <img src={Icontt} alt='Icone Twitter' />
           </a>
        </div>
-    </footer>
+     </footer>
+     </>
   );
 };
 

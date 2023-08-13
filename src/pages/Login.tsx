@@ -29,14 +29,14 @@ const Login: React.FC = () => {
 
   return (
     <>
-    <AuthForm
-      title="Login"
-      successMessage="Usuário logado com sucesso!"
-      onSubmit={handleLogin}
-      fields={fields}
-    />
-    <p className='register-message'>Dont have and account?<NavLink to="/register">Register</NavLink></p>
-    <Footer/>
+      <AuthForm
+        title="Login"
+        successMessage="Usuário logado com sucesso!"
+        onSubmit={handleLogin}
+        fields={fields}
+      />
+      <p className='register-message'>Dont have and account?<NavLink to="/register">Register</NavLink></p>
+      <Footer/>
     </>
   );
 };

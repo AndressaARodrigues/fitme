@@ -47,7 +47,7 @@
     padding: 0;
     margin: 10px 0;
     background: none;
-    margin-left: auto; /* Adicione esta linha */
+    margin-left: auto; 
   }
   
   .menu-line {
@@ -117,13 +117,12 @@
   .cart-icon-button {
     background-color: transparent;
     border: none;
-    cursor: pointer;
     color: #555;
-    width: 100%; 
     display: flex;
+    width: 100%;
     justify-content: center;
     align-items: center;
-    font-size: 24px;
+    font-size: 15px;
   }
   
   
