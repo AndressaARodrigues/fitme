@@ -51,7 +51,7 @@
   justify-content: space-between;
   gap: 20px;
   align-items: center;
-    /*position: relative;*/
+  /*position: relative;*/
   overflow: hidden;
   margin: 0;
   padding: 0;
@@ -67,6 +67,33 @@
 
 .food-image3{
   max-height:300px;
+}
+
+/* conteudo dos restaurantes */
+.restaurants-section{
+  display: flex;
+  flex-direction: column;
+  padding: 4rem 8rem;
+}
+
+.title-restaurant {
+  font-size: 18px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.restaurant-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.card-row {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 20px;
 }
 
 @media (max-width: 1107px) {
@@ -135,3 +162,4 @@
     height: 26px;
   }
 }
+
