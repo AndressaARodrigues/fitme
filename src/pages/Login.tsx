@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom'; 
+//import Axios from 'axios'; 
 import AuthForm from '../components/AuthForm';
 import Footer from '../components/Footer';
 import './Login.css';
@@ -8,8 +9,9 @@ const Login: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   
-  const handleLogin = () => {
+  const handleLogin = async() => {
     // Lógica de autenticação para login
+      
   };
 
   const fields = [

@@ -1,0 +1,114 @@
+
+.containerHeader{
+    background-color: #202020;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem 8rem;
+    align-items: center;
+    /*gap: 30px;*/
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+}
+
+.restaurantImage img{
+    width: 350px;
+}
+
+.restaurantDescription{
+    display: flex;
+    flex-direction: column;
+}
+
+.restaurantInfo{
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.titleRestaurant{
+    font-size: 22px;
+}
+
+
+.containerInfo{
+    border-right: 1px solid white;
+    padding-right: 20px;
+}
+
+.containerOffers{
+    padding: 15px;
+    border-radius: 8px;
+    border: 2px dashed #ffa500;
+}
+
+.orange-text, .fa-tag{
+    color: #ffa500;
+}
+
+.offers {
+    font-size: 18px;
+}
+
+.containerMenu{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 2rem 8rem;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+}
+
+.menuFoods{
+}
+
+.portionDishes{
+    max-width: 600px;
+}
+
+.containerCart{
+    width: 280px;
+}
+
+.titleCart{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cart{
+    font-size: 18px;
+}
+
+.item{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.subTotalTitle{
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+}
+
+.subTotalTitle p{
+    margin: 0;
+}
+
+.gray-text{
+    color: #808080;
+    font-size: 12px;
+}
+
+
+.checkout_btn{
+    width: 100%;
+    background-color: #FC8019;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    height: 40px;
+}

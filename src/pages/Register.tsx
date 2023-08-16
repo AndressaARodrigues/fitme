@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+//import Axios from 'axios'; 
 import AuthForm from '../components/AuthForm';
 import Footer from '../components/Footer';
 import './Register.css';
@@ -11,19 +12,20 @@ const Register: React.FC = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleRegister = () => {
+  const handleRegister = async() => {
     // Lógica de registro com os dados do formulário
+    
   };
 
   const fields = [
     {
-      label: 'Nome Completo',
+      label: 'Fullname',
       type: 'text',
       value: fullName,
       onChange: setFullName,
     },
     {
-      label: 'Nome de Usuário',
+      label: 'Username',
       type: 'text',
       value: username,
       onChange: setUsername,
@@ -35,13 +37,13 @@ const Register: React.FC = () => {
       onChange: setEmail,
     },
     {
-      label: 'Senha',
+      label: 'Password',
       type: 'password',
       value: password,
       onChange: setPassword,
     },
     {
-      label: 'Confirmar Senha',
+      label: 'Confirm Password',
       type: 'password',
       value: confirmPassword,
       onChange: setConfirmPassword,

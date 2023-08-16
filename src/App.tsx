@@ -5,7 +5,8 @@ import HomePage from './pages/Home';
 import RootLayout from './pages/Root';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Login2 from './pages/Form';
+//import Cart from './pages/RestaurantPage';
+import RestaurantPage from './pages/RestaurantPage';
 
 function App() {
   return (
@@ -15,8 +16,8 @@ function App() {
         <Route path="/" element={<RootLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/login2" element={<Login2 />} />
           <Route path="/register" element={<Register/>}/>
+          <Route path="/restaurant" element={<RestaurantPage/>} />
           <Route path="*" element={<ErrorPage />} />
         </Route>
       </Routes>
