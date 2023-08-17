@@ -6,9 +6,11 @@ import FoodImage2 from '../assets/Rectangle2.png';
 import FoodImage3 from '../assets/Rectangle3.png';
 import ImageBanana from '../assets/banana.png';
 import ImageMaca from '../assets/maca.png';
-import RestaurantImage1 from '../assets/Restaurant1.png';
+import RestaurantImage from '../assets/Restaurant1.png';
 import RestaurantCard from '../components/RestaurantCard';
 import './Home.css';
+import LoadingSpinner from '../components/LoadingSpinner';
+import OrangeText from '../UI/OrangeText';
 
 interface Restaurant {
   node: {
@@ -56,18 +58,18 @@ const Home: React.FC = () => {
       `,
     };
 
-    // Enviar a consulta GraphQL usando Axios
+    // Envia a consulta GraphQL usando Axios
     axios.post("https://parseapi.back4app.com/graphql", data, { headers })
       .then((response) => {
         // Exibir os dados da resposta no console
         console.log("GraphQL Response:", response.data);
         const fitMes: Restaurant[] = response.data?.data?.fitMes?.edges || [];
-        // Atualizar o estado com a lista de restaurantes e marcar o carregamento como concluído
+        // Atualiza o estado com a lista de restaurantes e marca o carregamento como concluído
         setRestaurants(fitMes);
         setLoading(false);
       })
       .catch((error) => {
-        // Em caso de erro, exibir uma mensagem de erro no console e marcar o carregamento como concluído
+        // Em caso de erro, exibe uma mensagem de erro no console e marca o carregamento como concluído
         console.error("GraphQL Error:", error);
         setLoading(false);
       });
@@ -79,16 +81,16 @@ const Home: React.FC = () => {
         <div className="hero-text">
           <p className="title">
             Premium 
-            <span className="orange-text"> quality</span>
+            <OrangeText> quality</OrangeText>
             <br/>Food for your 
-            <span className="icon-container">
-              <img src={ImageBanana} alt="Icone de banana" className='icon'/>
+            <span className="icon-container banana">
+              <img src={ImageBanana} alt="Icone de banana" className='icon-banana'/>
             </span>
-            <span className="orange-text">healthy</span>
-            <span className="icon-container">
-              <img src={ImageMaca} alt='Icone de maçã' className='icon'/>
+            <OrangeText> healthy</OrangeText>
+            <span className="icon-container apple">
+              <img src={ImageMaca} alt='Icone de maçã' className='icon-maca'/>
             </span>
-            <span className="orange-text"> & Daily life</span>
+            <OrangeText> & Daily life</OrangeText>
           </p>
           <p className="subtitle">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -103,8 +105,8 @@ const Home: React.FC = () => {
       <main className="restaurants-section">
         <p className='title-restaurant'>Restaurants</p>
          
-        {loading ? ( // Exibir "Loading..." enquanto os dados estão sendo carregados
-          <p>Loading...</p>
+        {loading ? ( // Exibe "Loading..." enquanto os dados estão sendo carregados
+          <LoadingSpinner/>
         ) : (
           <div className="restaurant-cards">   
             {restaurants.map((restaurant, index) => (
@@ -114,7 +116,7 @@ const Home: React.FC = () => {
                 cuisine={"south indian"} 
                 rating={restaurant.node.rating}
                 deliveryTime={restaurant.node.deliveryTime}
-                image={RestaurantImage1}
+                image={RestaurantImage}
               />
             ))}
           </div>

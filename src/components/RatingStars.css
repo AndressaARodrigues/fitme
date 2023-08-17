@@ -1,0 +1,36 @@
+.rating-stars {
+    display: inline-flex;
+    align-items: center;
+    font-size: 18px;
+    color: #ccc;
+}
+  
+.green-star {
+    color: green;
+}
+  
+.yellow-star {
+    color: yellow;
+}
+  
+.star {
+    margin-right: 0.25rem;
+}
+  
+.rating-value {
+    font-size: 16px;
+    margin-left: 0.25rem;
+    color: #777;;
+}
+  
+@media (max-width: 780px) {
+    .rating-value, .star{
+        font-size: 14px;
+    }
+}
+  
+@media (max-width: 700px) {
+    .rating-value, .star{
+        font-size: 12px;
+    }
+}

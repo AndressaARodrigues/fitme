@@ -15,33 +15,74 @@
   
 .hero-text .title {
   font-family: 'Poppins', sans-serif;
-  font-size: 40px;
+  font-size: 38px;
   line-height: 1.3;
   margin: 0px;
   padding-left: 8rem;
   max-width: 540px;
+  color: black;
 }
 
-.icon-container {
-  display: inline-block;
-  vertical-align: middle;
-  width: 100px;
-  height: 50px;
-  text-align: center;
-}
-
-.icon{ 
-  height: 46px;
-}
-  
-.hero-text .orange-text {
+.hero-text {
   color: #ffa500;
 }
   
 .hero-text .subtitle {
-  font-size: 12px;
+  font-size: 14px;
   max-width: 500px;
   padding-left: 8rem;
+  color: #404040;
+}
+
+/* Movimento dos icones de banana e maçã*/
+.icon-container{
+  display: inline-flex;
+  align-items: center;
+  border-radius: 50px;
+  width: 100px;
+  height: 60px;
+  margin: 0 7px;
+  vertical-align: middle;
+}
+
+.banana{
+  background-color: #FFEDD0;
+}
+
+.apple{
+  align-items: flex-start;
+  justify-content: center;
+  background-color: #FFD0D0;
+}
+
+.icon-banana{
+  animation: go-back-x 1s infinite alternate;
+}
+
+.icon-maca{
+  animation: go-back-y 1s infinite alternate;
+}
+
+.icon-banana, .icon-maca{
+  height: 40px;
+}
+  
+@keyframes go-back-x {
+  from {
+    transform: translateX(50px);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes go-back-y {
+  from {
+    transform: translateY(20px);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 
 /*imagens das comidas*/
@@ -88,14 +129,6 @@
   gap: 20px;
 }
 
-.card-row {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-bottom: 20px;
-}
-
 @media (max-width: 1107px) {
   .hero-section {
     flex-direction:column;
@@ -121,7 +154,11 @@
   }
 }
 
-@media (max-width: 660px) {
+@media (max-width: 700px) {
+  .hero-text  {
+    padding: 0;
+  }
+
   .hero-text .title {
     font-size: 26px;
     width: 400px;
@@ -132,34 +169,91 @@
     width: 400px;
   }
 
-  .icon{ 
-    height: 36px;
+  .icon-banana, .icon-maca{ 
+    height: 26px;
   }
 
   .icon-container {
-    width: 80px;
+    width: 65px;
     height: 36px;
+  }
+
+  @keyframes go-back-x {
+    from {
+      transform: translateX(35px);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes go-back-y {
+    from {
+      transform: translateY(10px);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  .title-restaurant{
+    font-size: 16px;
+  }
+
+  .restaurants-section{
+    padding: 2rem 8rem;
   }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 550px) {
+  .hero-text  {
+    padding: 0;
+  }
+
   .hero-text .title {
-    font-size: 18px;
-    width: 250px;
+    font-size: 22px;
+    width: 275px;
   }
 
   .hero-text .subtitle {
-    width: 250px;
-    font-size: 8px;
+    width: 275px;
+    font-size: 9px;
   }
 
-  .icon{ 
-    height: 26px;
+  .icon-banana, .icon-maca{ 
+    height: 20px;
   }
 
   .icon-container {
-    width: 60px;
+    width: 50px;
     height: 26px;
   }
+
+  @keyframes go-back-x {
+    from {
+      transform: translateX(25px);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes go-back-y {
+    from {
+      transform: translateY(5px);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  .title-restaurant{
+    font-size: 14px;
+  }
+
+  .restaurants-section{
+    align-items: center;
+  }
 }
+
 

@@ -18,7 +18,7 @@
     margin: 10px 0;
 }
   
-.restaurant-cuisine, .restaurant-ratings {
+.restaurant-cuisine {
     font-size: 16px;
     color: #777;
     margin: 0px;
@@ -27,11 +27,44 @@
 .restaurant-info {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
   
 .restaurant-delivery-time {
     font-size: 16px;
     color: #777;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
   
+@media (max-width: 780px) {
+    .restaurant-card {
+        width: 150px;
+        height: 300px;
+    }
+
+    .restaurant-name {
+        font-size: 18px;
+    }
+
+    .restaurant-cuisine, .restaurant-delivery-time {
+        font-size: 14px;
+    }
+}
+  
+@media (max-width: 700px) {
+    .restaurant-card {
+        width: 120px;
+        height: 240px;
+    }
+
+    .restaurant-name {
+        font-size: 14px;
+    }
+
+    .restaurant-cuisine, .restaurant-delivery-time {
+        font-size: 12px;
+    }
+}
