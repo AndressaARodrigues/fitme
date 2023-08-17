@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Footer from '../components/Footer';
 import FoodImage1 from '../assets/Rectangle1.png';
 import FoodImage2 from '../assets/Rectangle2.png';
@@ -9,65 +10,69 @@ import RestaurantImage1 from '../assets/Restaurant1.png';
 import RestaurantCard from '../components/RestaurantCard';
 import './Home.css';
 
+interface Restaurant {
+  node: {
+    objectId: string;
+    name: string;
+    cuisine: string; //não vem nada da api para esse campo
+    rating: number;
+    deliveryTime: string;
+    image: string;  //não vem nada da api para esse campo
+  };
+}
+
 const Home: React.FC = () => {
-  const restaurants = [
-    {
-      name: 'Ramachandra Parlour',
-      cuisine: 'south indian',
-      ratings: '4.0',
-      deliveryTime: '30 min',
-      image: RestaurantImage1,
-    },
-    {
-      name: 'Ramachandra Parlour',
-      cuisine: 'south indian',
-      ratings: '4.0',
-      deliveryTime: '30 min',
-      image: RestaurantImage1,
-    },
-    {
-      name: 'Ramachandra Parlour',
-      cuisine: 'south indian',
-      ratings: '4.0',
-      deliveryTime: '30 min',
-      image: RestaurantImage1,
-    },
-    {
-      name: 'Ramachandra Parlour',
-      cuisine: 'south indian',
-      ratings: '4.0',
-      deliveryTime: '30 min',
-      image: RestaurantImage1,
-    },
-    {
-      name: 'Ramachandra Parlour',
-      cuisine: 'south indian',
-      ratings: '4.0',
-      deliveryTime: '30 min',
-      image: RestaurantImage1,
-    },
-    {
-      name: 'Ramachandra Parlour',
-      cuisine: 'south indian',
-      ratings: '4.0',
-      deliveryTime: '30 min',
-      image: RestaurantImage1,
-    },
-    {
-      name: 'Ramachandra Parlour',
-      cuisine: 'south indian',
-      ratings: '4.0',
-      deliveryTime: '30 min',
-      image: RestaurantImage1,
-    },
-    {
-      name: 'Ramachandra Parlour',
-      cuisine: 'south indian',
-      ratings: '4.0',
-      deliveryTime: '30 min',
-      image: RestaurantImage1,
-    }
-  ];
+  // Estado para armazenar a lista de restaurantes
+  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+  // Estado para controlar o carregamento dos dados
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Cabeçalhos da requisição GraphQL
+    const headers = {
+      'X-Parse-Application-Id': 'DSiIkHz2MVbCZutKS7abtgrRVsiLNNGcs0L7VsNL',
+      'X-Parse-Master-Key': '0cpnqkSUKVkIDlQrNxameA6OmjxmrA72tsUMqVG9',
+      'X-Parse-Client-Key': 'zXOqJ2k44R6xQqqlpPuizAr3rs58RhHXfU7Aj20V',
+      'Content-Type': 'application/json',
+    };
+
+     // Corpo da consulta GraphQL
+    const data = {
+      query: `
+        query GetAllRestaurants {
+            fitMes {
+                count
+                edges {
+                    node {
+                        objectId
+                        name
+                        rating
+                        deliveryTime
+                        image
+                    }
+                }
+            }
+        }
+      `,
+    };
+
+    // Enviar a consulta GraphQL usando Axios
+    axios.post("https://parseapi.back4app.com/graphql", data, { headers })
+      .then((response) => {
+        // Exibir os dados da resposta no console
+        console.log("GraphQL Response:", response.data);
+        const fitMes: Restaurant[] = response.data?.data?.fitMes?.edges || [];
+        // Atualizar o estado com a lista de restaurantes e marcar o carregamento como concluído
+        setRestaurants(fitMes);
+        setLoading(false);
+      })
+      .catch((error) => {
+        // Em caso de erro, exibir uma mensagem de erro no console e marcar o carregamento como concluído
+        console.error("GraphQL Error:", error);
+        setLoading(false);
+      });
+    }, []); 
+
   return (
     <>
       <section className="hero-section">
@@ -97,18 +102,23 @@ const Home: React.FC = () => {
       </section>
       <main className="restaurants-section">
         <p className='title-restaurant'>Restaurants</p>
-        <div className="restaurant-cards">
-          {restaurants.map((restaurant, index) => (
-            <RestaurantCard
-              key={index}
-              name={restaurant.name}
-              cuisine={restaurant.cuisine}
-              ratings={restaurant.ratings}
-              deliveryTime={restaurant.deliveryTime}
-              image={restaurant.image}
-            />
-          ))}
-        </div>
+         
+        {loading ? ( // Exibir "Loading..." enquanto os dados estão sendo carregados
+          <p>Loading...</p>
+        ) : (
+          <div className="restaurant-cards">   
+            {restaurants.map((restaurant, index) => (
+              <RestaurantCard
+                key={index}
+                name={restaurant.node.name}
+                cuisine={"south indian"} 
+                rating={restaurant.node.rating}
+                deliveryTime={restaurant.node.deliveryTime}
+                image={RestaurantImage1}
+              />
+            ))}
+          </div>
+        )}
       </main>
 
       <Footer />
