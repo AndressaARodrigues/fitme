@@ -111,14 +111,12 @@ const Cart: React.FC = () => {
         </div>
       </section>
       <main className='containerMenu'>
-        <div className='menuFoods'>
+        <div>
           <p className='orange-text'>Recommended</p>
-          <ul>
+          <ul className='menuFoods'>
             {dishes &&
                dishes.map((dishes, index) => (
-                <li key={index}>
-                    {dishes.name}
-                </li>
+                <li key={index}>{dishes.name}</li>
             ))}
           </ul>
         </div>
@@ -127,7 +125,7 @@ const Cart: React.FC = () => {
                 {dishes &&
                 dishes.map((dishes, index) => (
                   <li key={index}>
-                    <p>{dishes.name}</p>
+                    <p >{dishes.name}</p>
                     <p>{dishes.price}</p>
                     <p>{dishes.description}</p>
                   </li>
@@ -137,18 +135,27 @@ const Cart: React.FC = () => {
           <div className='containerCart'>
             <div className='titleCart'>
               <p className='cart'>Cart</p>
-              <p> items</p>
+              <p>2 items</p>
             </div>
             {restaurants && (
             <p>from <span className='orange-text'>{restaurants.name}</span></p>
             )}
-              <div  className='subTotalTitle'>
-                <p>Subtotal</p>
-                <p>₹</p>
-              </div>
-              <p className='gray-text'>Extra charges may apply</p>
-              <button className='checkout_btn' >Checkout</button>
+            <div className='item'>
+              <p>Brunch for 2 - Veg</p>
+              <p>
+                  <button >- </button>
+                  1
+                  <button > +</button>
+              </p>
             </div>
+            <p>₹599</p>
+            <div  className='subTotalTitle'>
+              <p>Subtotal</p>
+              <p>₹799</p>
+            </div>
+            <p className='gray-text'>Extra charges may apply</p>
+            <button className='checkout_btn' >Checkout</button>
+          </div>
       </main>
     </div>
       <Footer/>
