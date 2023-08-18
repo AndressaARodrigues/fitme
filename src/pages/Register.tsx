@@ -1,34 +1,66 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Footer from '../components/Footer';
+import RegisterForm from '../components/RegisterForm';
+
 import './Register.css';
-import Button from '../UI/Button';
+
+const API_URL = "https://parseapi.back4app.com/graphql";
+
+const HEADERS = {
+  'X-Parse-Application-Id': 'DSiIkHz2MVbCZutKS7abtgrRVsiLNNGcs0L7VsNL',
+  'X-Parse-Master-Key': '0cpnqkSUKVkIDlQrNxameA6OmjxmrA72tsUMqVG9',
+  'X-Parse-Client-Key': 'zXOqJ2k44R6xQqqlpPuizAr3rs58RhHXfU7Aj20V',
+  'Content-Type': 'application/json',
+};
 
 const Register: React.FC = () => {
-  const buttonText = "Register";
+  const [fullname, setFullname] = useState('');
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [usernameError, setUsernameError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleRegistration = () => {
+  const [usernameError, setUsernameError] = useState("");
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const navigate = useNavigate();
+
+  const validateForm = () => {
+    let valid = true;
+
     if (username.trim() === '') {
       setUsernameError('Username is required');
-      return;
+      valid = false;
+    }
+
+    if (!email.match(/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/)) {
+      setEmailError('Invalid email format');
+      valid = false;
     }
 
     if (password.trim() === '') {
       setPasswordError('Password is required');
-      return;
+      valid = false;
+    } else if (password.length < 8) {
+      setPasswordError('Password must be at least 8 characters long');
+      valid = false;
     }
 
-    const headers = {
-      'X-Parse-Application-Id': 'DSiIkHz2MVbCZutKS7abtgrRVsiLNNGcs0L7VsNL',
-      'X-Parse-Master-Key': '0cpnqkSUKVkIDlQrNxameA6OmjxmrA72tsUMqVG9',
-      'X-Parse-Client-Key': 'zXOqJ2k44R6xQqqlpPuizAr3rs58RhHXfU7Aj20V',
-      'Content-Type': 'application/json',
-    };
+    if (password !== confirmPassword) {
+      setConfirmPasswordError('Passwords do not match');
+      valid = false;
+    }
+
+    return valid;
+  };
+
+  const handleRegistration = () => {
+    if (!validateForm()) {
+      return;
+    }
 
     const data = {
       query: `
@@ -55,16 +87,16 @@ const Register: React.FC = () => {
       },
     };
 
-    axios
-    .post("https://parseapi.back4app.com/graphql", data, { headers })
-    .then((response) => {
-      console.log("User created:", response.data);
-      alert(`Registration successful!\nResponse:\n${JSON.stringify( response.data, null, 2 )}`);
-    })
-    .catch((error) => {
-      console.error("Registration error:", error);
-      alert(`Registration failed: ${error.response.data.error}`);
-    });
+    axios.post(API_URL, data, { headers: HEADERS })
+      .then((response) => {
+        console.log("GraphQL Response:", response.data);
+        alert(`Response registration:\n${JSON.stringify(response.data, null, 2)}`);
+        navigate('/login');
+      })
+      .catch((error) => {
+        console.error('Registration error:', error);
+        alert(`An error occurred during registration: ${error.response?.data.error}`);
+      });
   };
 
   return (
@@ -73,27 +105,23 @@ const Register: React.FC = () => {
         <h2>Register</h2>
       </div>
       <div className='formContainer'>
-        <form onSubmit={handleRegistration}>
-          <div className='formFieldsContainer'>
-            <label>Username:</label>
-            <input
-              type='text'
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            {usernameError && <p className='error'>{usernameError}</p>}
-          </div>
-          <div className='formFieldsContainer'>
-            <label>Password:</label>
-            <input
-              type='password'
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            {passwordError && <p className='error'>{passwordError}</p>}
-          </div>
-          <Button>{buttonText}</Button>
-        </form>
+        <RegisterForm
+          onSubmit={handleRegistration}
+          fullname={fullname}
+          setFullname={setFullname}
+          username={username}
+          setUsername={setUsername}
+          email={email}
+          setEmail={setEmail}
+          password={password}
+          setPassword={setPassword}
+          confirmPassword={confirmPassword}
+          setConfirmPassword={setConfirmPassword}
+          usernameError={usernameError}
+          emailError={emailError}
+          passwordError={passwordError}
+          confirmPasswordError={confirmPasswordError}
+        />
       </div>
       <p className='register-message'>Dont have and account?<NavLink to="/login">Login</NavLink></p>
       <Footer />

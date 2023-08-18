@@ -1,79 +1,86 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import Footer from '../components/Footer';
 import LogoImage from '../assets/Rectangle 28.png';
 import './RestaurantPage.css';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
-interface CartItem {
-  name: string;
-  price: number;
-  quantity: number;
-  description: string; 
+interface RestaurantData{
+  name:string;
+  rating: number;
+  deliveryTime: string;
+  topDishes: DishData[]; 
 }
 
 const Cart: React.FC = () => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-      {
-        name: 'Brunch for 2 - Veg',
-        price: 599,
-        quantity: 1,
-        description:
-          'Brunch: One meal to rule them all! Grab this mega saver combo with your choice of 2 veg wraps, Aloo Paratha (2 pcs), chole and Curd lunchbox and 2 choco lava cakes. This is just bliss on a plate!',
-      },
-  ]);
 
-  const handleAddToCart = (item: CartItem) => {
-    const existingItem = cartItems.find(cartItem => cartItem.name === item.name);
+  const { id } = useParams<{ id: string }>();
+  const[restaurantData, setRestaurantData] = useState<RestaurantData | null>(
+    null
+  );
 
-    if (existingItem) {
-      setCartItems(prevCartItems =>
-        prevCartItems.map(cartItem =>
-          cartItem.name === item.name
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
-            : cartItem
-        )
-      );
-    } else {
-      setCartItems(prevCartItems => [...prevCartItems, { ...item, quantity: 1 }]);
-    }
-  };
 
-  const handleRemoveFromCart = (item: CartItem) => {
-    const existingItem = cartItems.find(cartItem => cartItem.name === item.name);
+  useEffect(() => {
+    const headers = {
+      'X-Parse-Application-Id': 'DSiIkHz2MVbCZutKS7abtgrRVsiLNNGcs0L7VsNL',
+      'X-Parse-Master-Key': '0cpnqkSUKVkIDlQrNxameA6OmjxmrA72tsUMqVG9',
+      'X-Parse-Client-Key': 'zXOqJ2k44R6xQqqlpPuizAr3rs58RhHXfU7Aj20V',
+      'Content-Type': 'application/json',
+    };
 
-    if (existingItem && existingItem.quantity > 1) {
-      setCartItems(prevCartItems =>
-        prevCartItems.map(cartItem =>
-          cartItem.name === item.name
-            ? { ...cartItem, quantity: cartItem.quantity - 1 }
-            : cartItem
-        )
-      );
-    } else {
-      setCartItems(prevCartItems =>
-        prevCartItems.filter(cartItem => cartItem.name !== item.name)
-      );
-    }
-  };
+   
+    const data = {
+      query: `
+        query GetRestaurantById {
+          fitMe(id: "${id}") {
+            name
+            image
+            location
+            topDishes {
+              ...AllDishes
+            }
+          }
+        }
+        fragment AllDishes on Dish {
+          name
+          description
+          image
+          price
+        }
+      `
+    };
 
-  const cartTotal = cartItems.reduce((total, cartItem) => total + cartItem.price * cartItem.quantity, 0);
-
+    
+    axios
+      .post('https://parseapi.back4app.com/graphql', data, { headers })
+      .then((response) => {
+        console.log('GraphQL Response:', response.data);
+        const fitMe: RestaurantData | null = response.data?.data?.fitMe || null; 
+        setRestaurantData(fitMe);
+      })
+      .catch((error) => {
+        console.error('GraphQL Error:', error);
+      });
+  }, [id]); 
 
   return (
     <>
+    {restaurantData ? (
+      <div>
       <section className='containerHeader'>
         <div className='restaurantImage'>
           <img src={LogoImage} alt="Imagem de comida" />
         </div>
         <div className='restaurantDescription'>
-          <p className='titleRestaurant'>LunchBox - Meals and Thalis</p>
+          <p className='titleRestaurant'>{restaurantData.name}</p>
           <p>north indian, punjabi</p>
           <div className='restaurantInfo'>
             <div className='containerInfo'>
               <p><i className="fa-solid fa-star"></i> 4.0</p>
-              <p>100+ ratings</p>
+              <p>{restaurantData.rating}+ ratings</p>
             </div>
             <div className='containerInfo'>
-              <p>30min</p>
+              <p>{restaurantData.deliveryTime}</p>
               <p>Deliery Time</p>
             </div>
             <div>
@@ -91,50 +98,45 @@ const Cart: React.FC = () => {
       <main className='containerMenu'>
         <div className='menuFoods'>
           <p className='orange-text'>Recommended</p>
-          <p>Breakfast Box</p>
-          <p>Lunch Box</p>
-          <p>Combo box</p>
-          <p>Biriyani Box</p>
+          <ul>
+            {restaurantData.topDishes.map((dish, index) => (
+              <li key={index}>
+                  <p>{dish.name}</p>
+              </li>
+            ))}
+          </ul>
         </div>
         <div className='portionDishes'>
-        {cartItems.map((cartItem, index) => (
-            <div key={index}>
-              <p>{cartItem.name}</p>
-              <p>{cartItem.price}</p>
-              <p>{cartItem.description}</p>
-              <button onClick={() => handleAddToCart(cartItem)}>Add+</button>
-            </div>
-        ))}
+          <p className='orange-text'>Portion Dishes</p>
+              <ul>
+                {restaurantData.topDishes.map((dish, index) => (
+                  <li key={index}>
+                    <p>{dish.name}</p>
+                    <p>{dish.price}</p>
+                    <p>{dish.description}</p>
+                  </li>
+                ))}
+              </ul>
         </div>
-        {cartItems.length > 0 && (
           <div className='containerCart'>
             <div className='titleCart'>
               <p className='cart'>Cart</p>
-              <p>{cartItems.length} items</p>
+              <p> items</p>
             </div>
             <p>from <span className='orange-text'>Lunch box</span></p>
-            {cartItems.map((cartItem, index) => (
-              <div key={index} className='item'>
-                <p>{cartItem.name}</p>
-                <p>
-                  - {cartItem.quantity} {cartItem.quantity > 1 ? 'units' : 'unit'}
-                  <button onClick={() => handleRemoveFromCart(cartItem)}>-</button>
-                  <button onClick={() => handleAddToCart(cartItem)}>+</button>
-                </p>
-              </div>
-            ))}
 
               <div  className='subTotalTitle'>
                 <p>Subtotal</p>
-                <p>₹{cartTotal}</p>
+                <p>₹</p>
               </div>
               <p className='gray-text'>Extra charges may apply</p>
               <button className='checkout_btn' >Checkout</button>
             </div>
-         
-        )}
       </main>
-
+    </div>
+      ) : (
+        <p>Loading...</p>
+      )}
       <Footer/>
     </>
   );
