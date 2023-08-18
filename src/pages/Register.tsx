@@ -29,32 +29,41 @@ const Register: React.FC = () => {
   const navigate = useNavigate();
 
   const validateForm = () => {
-    let valid = true;
+    const emailFormat = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+    const passwordMinLength = 8;
+
+    const errors = {
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    };
 
     if (username.trim() === '') {
       setUsernameError('Username is required');
-      valid = false;
     }
+    //
 
-    if (!email.match(/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/)) {
-      setEmailError('Invalid email format');
-      valid = false;
+    if (!email.match(emailFormat)) {
+      errors.email = 'Invalid email format';
     }
 
     if (password.trim() === '') {
-      setPasswordError('Password is required');
-      valid = false;
-    } else if (password.length < 8) {
-      setPasswordError('Password must be at least 8 characters long');
-      valid = false;
+      errors.password = 'Password is required';
+    } else if (password.length < passwordMinLength) {
+      errors.password = `Password must be at least ${passwordMinLength} characters long`;
     }
 
     if (password !== confirmPassword) {
-      setConfirmPasswordError('Passwords do not match');
-      valid = false;
+      errors.confirmPassword = 'Passwords do not match';
     }
 
-    return valid;
+    setUsernameError(errors.username);
+    setEmailError(errors.email);
+    setPasswordError(errors.password);
+    setConfirmPasswordError(errors.confirmPassword);
+
+    return errors.username === '' && Object.values(errors).every(error => error === '');
   };
 
   const handleRegistration = () => {
@@ -89,12 +98,12 @@ const Register: React.FC = () => {
 
     axios.post(API_URL, data, { headers: HEADERS })
       .then((response) => {
-        console.log("GraphQL Response:", response.data);
+        console.log("Registration data successfully:", response.data);
         alert(`Response registration:\n${JSON.stringify(response.data, null, 2)}`);
         navigate('/login');
       })
       .catch((error) => {
-        console.error('Registration error:', error);
+        console.error('Response error:', error);
         alert(`An error occurred during registration: ${error.response?.data.error}`);
       });
   };

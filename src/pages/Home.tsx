@@ -11,6 +11,7 @@ import RestaurantCard from '../components/RestaurantCard';
 import LoadingSpinner from '../components/LoadingSpinner';
 import OrangeText from '../UI/OrangeText';
 import './Home.css';
+import { NavLink } from 'react-router-dom';
 
 interface Restaurant {
   node: {
@@ -62,7 +63,7 @@ const Home: React.FC = () => {
     axios.post("https://parseapi.back4app.com/graphql", data, { headers })
       .then((response) => {
         // Exibir os dados da resposta no console
-        console.log("GraphQL Response:", response.data);
+        console.log("Restaurant data successfully:", response.data);
         const fitMes: Restaurant[] = response.data?.data?.fitMes?.edges || [];
         // Atualiza o estado com a lista de restaurantes e marca o carregamento como concluído
         setRestaurants(fitMes);
@@ -70,7 +71,7 @@ const Home: React.FC = () => {
       })
       .catch((error) => {
         // Em caso de erro, exibe uma mensagem de erro no console e marca o carregamento como concluído
-        console.error("GraphQL Error:", error);
+        console.error("Response error:", error);
         setLoading(false);
       });
     }, []); 
@@ -109,15 +110,16 @@ const Home: React.FC = () => {
           <LoadingSpinner/>
         ) : (
           <div className="restaurant-cards">   
-            {restaurants.map((restaurant, index) => (
-              <RestaurantCard
-                key={index}
-                name={restaurant.node.name}
-                cuisine={"south indian"} 
-                rating={restaurant.node.rating}
-                deliveryTime={restaurant.node.deliveryTime}
-                image={RestaurantImage}
-              />
+            {restaurants.map((restaurant) => (
+              <NavLink key={restaurant.node.objectId} to={`/restaurant/${restaurant.node.objectId}`}>
+                <RestaurantCard
+                  name={restaurant.node.name}
+                  cuisine={"south indian"} 
+                  rating={restaurant.node.rating}
+                  deliveryTime={restaurant.node.deliveryTime}
+                  image={RestaurantImage}
+                /> 
+              </NavLink>
             ))}
           </div>
         )}

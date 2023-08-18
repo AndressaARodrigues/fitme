@@ -14,6 +14,7 @@ const HEADERS = {
   'Content-Type': 'application/json',
 };
 
+
 const Login: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -23,18 +24,23 @@ const Login: React.FC = () => {
   const buttonText = "Login";
 
   const validateForm = () => {
-    let valid = true;
+    const errors = {
+      username: '',
+      password: '',
+    };
 
     if (username.trim() === '') {
-      setUsernameError('Username is required');
-      valid = false;
+      errors.username = 'Username is required';
     }
 
     if (password.trim() === '') {
-      setPasswordError('Password is required');
-      valid = false;
+      errors.password = 'Password is required';
     }
-    return valid;
+
+    setUsernameError(errors.username);
+    setPasswordError(errors.password);
+
+    return Object.values(errors).every(error => error === '');
   };
 
   const handleSignIn = () => {
@@ -69,7 +75,7 @@ const Login: React.FC = () => {
 
     axios.post(API_URL, data, { headers: HEADERS })
       .then((response) => {
-        console.log("GraphQL Response:", response.data);
+        console.log("LogIn data successfully:", response.data);
         const sessionToken = response.data.data.logIn.viewer.sessionToken;
         localStorage.setItem("sessionToken", sessionToken);
         alert(`Response logIn:\n${JSON.stringify(response.data, null, 2)}`);

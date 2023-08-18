@@ -5,30 +5,35 @@ import './RestaurantPage.css';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
-interface RestaurantData{
+interface Restaurants{
   name:string;
   rating: number;
   deliveryTime: string;
-  topDishes: DishData[]; 
+  topDishes: Dishes[]; 
 }
+
+interface Dishes{
+  name: string;
+  price: number;
+  description: string;
+}
+
+const API_URL = "https://parseapi.back4app.com/graphql";
+
+const HEADERS = {
+  'X-Parse-Application-Id': 'DSiIkHz2MVbCZutKS7abtgrRVsiLNNGcs0L7VsNL',
+  'X-Parse-Master-Key': '0cpnqkSUKVkIDlQrNxameA6OmjxmrA72tsUMqVG9',
+  'X-Parse-Client-Key': 'zXOqJ2k44R6xQqqlpPuizAr3rs58RhHXfU7Aj20V',
+  'Content-Type': 'application/json',
+};
 
 const Cart: React.FC = () => {
 
-  const { id } = useParams<{ id: string }>();
-  const[restaurantData, setRestaurantData] = useState<RestaurantData | null>(
-    null
-  );
-
+  const { id } = useParams();
+  const[restaurants, setRestaurants] = useState<Restaurants>();
+  const [dishes, setDishes] = useState<Dishes[]>([]);
 
   useEffect(() => {
-    const headers = {
-      'X-Parse-Application-Id': 'DSiIkHz2MVbCZutKS7abtgrRVsiLNNGcs0L7VsNL',
-      'X-Parse-Master-Key': '0cpnqkSUKVkIDlQrNxameA6OmjxmrA72tsUMqVG9',
-      'X-Parse-Client-Key': 'zXOqJ2k44R6xQqqlpPuizAr3rs58RhHXfU7Aj20V',
-      'Content-Type': 'application/json',
-    };
-
-   
     const data = {
       query: `
         query GetRestaurantById {
@@ -50,38 +55,47 @@ const Cart: React.FC = () => {
       `
     };
 
-    
-    axios
-      .post('https://parseapi.back4app.com/graphql', data, { headers })
+    axios.post(API_URL, data , { headers : HEADERS})
       .then((response) => {
-        console.log('GraphQL Response:', response.data);
-        const fitMe: RestaurantData | null = response.data?.data?.fitMe || null; 
-        setRestaurantData(fitMe);
+        console.log("Restaurant data successfully:", response.data); 
+       
+        const restaurants = response.data.data.fitMe; 
+        const dishes = response.data.data.fitMe.topDishes;
+        
+        setRestaurants(response.data.data.fitMe);
+        console.log("Restaurants data:", restaurants);
+        
+        setDishes(response.data.data.fitMe.topDishes);
+        console.log("Dishes data: ", dishes);
       })
       .catch((error) => {
-        console.error('GraphQL Error:', error);
+        if (error.response) {
+           console.error("Response error:", error.response.data);
+        } else{
+          console.error("Error setting up request:", error.message);
+        }
       });
-  }, [id]); 
+  }, [id]);
 
   return (
     <>
-    {restaurantData ? (
       <div>
       <section className='containerHeader'>
         <div className='restaurantImage'>
           <img src={LogoImage} alt="Imagem de comida" />
         </div>
+        {restaurants && (
         <div className='restaurantDescription'>
-          <p className='titleRestaurant'>{restaurantData.name}</p>
+          <p className='titleRestaurant'>{restaurants.name}</p>
           <p>north indian, punjabi</p>
           <div className='restaurantInfo'>
             <div className='containerInfo'>
               <p><i className="fa-solid fa-star"></i> 4.0</p>
-              <p>{restaurantData.rating}+ ratings</p>
+              <p>{restaurants.rating}+ ratings</p>
             </div>
             <div className='containerInfo'>
-              <p>{restaurantData.deliveryTime}</p>
-              <p>Deliery Time</p>
+              <p>{restaurants.deliveryTime}</p>
+              <p>Delivery Time</p>
             </div>
             <div>
               <p>200</p>
@@ -89,6 +103,7 @@ const Cart: React.FC = () => {
             </div>
           </div>
         </div>
+        )}
         <div className='containerOffers'>
           <p className='orange-text offers'>Offers</p>
           <p> <i className="fa-solid fa-tag fa-rotate-90"></i> 50% off up to ₹100 | Use code TRYNEW</p>
@@ -99,21 +114,22 @@ const Cart: React.FC = () => {
         <div className='menuFoods'>
           <p className='orange-text'>Recommended</p>
           <ul>
-            {restaurantData.topDishes.map((dish, index) => (
-              <li key={index}>
-                  <p>{dish.name}</p>
-              </li>
+            {dishes &&
+               dishes.map((dishes, index) => (
+                <li key={index}>
+                    {dishes.name}
+                </li>
             ))}
           </ul>
         </div>
         <div className='portionDishes'>
-          <p className='orange-text'>Portion Dishes</p>
               <ul>
-                {restaurantData.topDishes.map((dish, index) => (
+                {dishes &&
+                dishes.map((dishes, index) => (
                   <li key={index}>
-                    <p>{dish.name}</p>
-                    <p>{dish.price}</p>
-                    <p>{dish.description}</p>
+                    <p>{dishes.name}</p>
+                    <p>{dishes.price}</p>
+                    <p>{dishes.description}</p>
                   </li>
                 ))}
               </ul>
@@ -123,8 +139,9 @@ const Cart: React.FC = () => {
               <p className='cart'>Cart</p>
               <p> items</p>
             </div>
-            <p>from <span className='orange-text'>Lunch box</span></p>
-
+            {restaurants && (
+            <p>from <span className='orange-text'>{restaurants.name}</span></p>
+            )}
               <div  className='subTotalTitle'>
                 <p>Subtotal</p>
                 <p>₹</p>
@@ -134,9 +151,6 @@ const Cart: React.FC = () => {
             </div>
       </main>
     </div>
-      ) : (
-        <p>Loading...</p>
-      )}
       <Footer/>
     </>
   );
