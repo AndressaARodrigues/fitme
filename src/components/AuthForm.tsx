@@ -52,7 +52,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ title, successMessage, onSubmit, fi
                 />
               </div>
             ))}
-            <Button onClick={handleAuth}>{title}</Button>
+            <Button>{title}</Button>
           </form>
         )}
       </div>

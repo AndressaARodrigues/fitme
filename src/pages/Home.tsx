@@ -8,9 +8,9 @@ import ImageBanana from '../assets/banana.png';
 import ImageMaca from '../assets/maca.png';
 import RestaurantImage from '../assets/Restaurant1.png';
 import RestaurantCard from '../components/RestaurantCard';
-import './Home.css';
 import LoadingSpinner from '../components/LoadingSpinner';
 import OrangeText from '../UI/OrangeText';
+import './Home.css';
 
 interface Restaurant {
   node: {
