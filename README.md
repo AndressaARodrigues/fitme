@@ -7,7 +7,7 @@
 </h3>
 
 <h4 align="center">
-	🚧  Em andamento - Está branch é para algumas correções de layout da pagina Restaurant Page  🚀 🚧
+	🚧  Em andamento - Esta branch é para algumas correções de layout da pagina Restaurant Page  🚀 🚧
 </h4>
 
 Tabela de conteúdos
