@@ -94,7 +94,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 #### **Utilitários**
 
--   Protótipo:  **[Figma]**  →  **[Protótipo (FitMe)](https://www.figma.com/file/1SxgOMojOB2zYT0Mdk28lB/Ecoleta)**
+-   Protótipo:  **[Figma]**  →  **[Protótipo (FitMe)](https://www.figma.com/file/ZietNBdXT7ghq2xksDmipM/FitMe---Online-Food-Delivery-Website?type=design&node-id=127-190&mode=design&t=LMFDPmg2iQBUaiNZ-0)**
 -   API:  **[back4app](https://www.back4app.com/)** 
 -   Editor:  **[Visual Studio Code](https://code.visualstudio.com/)**  
 -   Ícones:  **[Font Awesome](https://fontawesome.com/)**
