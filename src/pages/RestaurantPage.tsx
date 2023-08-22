@@ -32,6 +32,8 @@ const Cart: React.FC = () => {
   const { id } = useParams();
   const[restaurants, setRestaurants] = useState<Restaurants>();
   const [dishes, setDishes] = useState<Dishes[]>([]);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [cartItems, setCartItems] = useState<number[]>([]); // Estado para guardar os itens do carrinho
 
   useEffect(() => {
     const data = {
@@ -77,9 +79,31 @@ const Cart: React.FC = () => {
       });
   }, [id]);
 
+  // Função para adicionar um item ao carrinho
+  const addToCart = (index: number) => {
+    setCartItems([...cartItems, index]);
+  };
+
+  // Função para remover um item do carrinho
+  const removeFromCart = (index: number) => {
+    const updatedCartItems = cartItems.filter(itemIndex => itemIndex !== index);
+    setCartItems(updatedCartItems);
+  };
+
+  //Função para calcular subTotal
+  const calculateSubtotal = () => {
+    let subtotal = 0;
+
+    cartItems.forEach(cartItemIndex => {
+      const itemPrice = dishes[cartItemIndex].price;
+      subtotal += itemPrice;
+    });
+
+    return subtotal;
+  };
+
   return (
     <>
-      <div>
       <section className='containerHeader'>
         <div className='restaurantImage'>
           <img src={LogoImage} alt="Imagem de comida" />
@@ -91,14 +115,14 @@ const Cart: React.FC = () => {
           <div className='restaurantInfo'>
             <div className='containerInfo'>
               <p><i className="fa-solid fa-star"></i> 4.0</p>
-              <p>{restaurants.rating}+ ratings</p>
+              <p>{restaurants.rating}100+ ratings</p>
             </div>
             <div className='containerInfo'>
-              <p>{restaurants.deliveryTime}</p>
+              <p>30 - 40 min</p>
               <p>Delivery Time</p>
             </div>
-            <div>
-              <p>200</p>
+            <div className='containerInfo2'>
+              <p>₹200</p>
               <p>Cost for two</p>
             </div>
           </div>
@@ -108,6 +132,19 @@ const Cart: React.FC = () => {
           <p className='orange-text offers'>Offers</p>
           <p> <i className="fa-solid fa-tag fa-rotate-90"></i> 50% off up to ₹100 | Use code TRYNEW</p>
           <p> <i className="fa-solid fa-tag fa-rotate-90"></i> 20% off | Use code PARTY</p>
+        </div>
+      </section>
+      <section className="options-container">
+        <div className="search-container">
+          <input type="text" className="search-input" placeholder="Search for dish" />
+          <button className="search-button">
+            <i className="fa-solid fa-search fa-rotate-90"></i>
+          </button>
+        </div>
+        <div className='favorite-container'>
+          <button className="favorite-button" onClick={() => setIsFavorite(!isFavorite)}>
+            <i className={`fa${isFavorite ? '-solid' : '-regular'} fa-star`}></i> Favorite
+          </button>
         </div>
       </section>
       <main className='containerMenu'>
@@ -121,43 +158,55 @@ const Cart: React.FC = () => {
           </ul>
         </div>
         <div className='portionDishes'>
-              <ul>
-                {dishes &&
+            <ul>
+              {dishes &&
                 dishes.map((dishes, index) => (
-                  <li key={index}>
-                    <p >{dishes.name}</p>
-                    <p>{dishes.price}</p>
-                    <p>{dishes.description}</p>
+                  <li key={index} className='list-dishes'>
+                    <div className='dishDetails'>
+                      <p className='dishName'>{dishes.name}</p>
+                      <p className='dishPrice'>₹ {dishes.price}</p>
+                      <p className='dishDescription'>{dishes.description}</p>
+                    </div>
+                    <button className="add-button" onClick={() => addToCart(index)}>
+                      Add +
+                    </button>
                   </li>
-                ))}
-              </ul>
+              ))}
+            </ul>
         </div>
-          <div className='containerCart'>
+        <div className='containerCart'>
             <div className='titleCart'>
               <p className='cart'>Cart</p>
-              <p>2 items</p>
+              <p>{cartItems.length} items</p>
             </div>
             {restaurants && (
             <p>from <span className='orange-text'>{restaurants.name}</span></p>
             )}
-            <div className='item'>
-              <p>Brunch for 2 - Veg</p>
-              <p>
-                  <button >- </button>
-                  1
-                  <button > +</button>
-              </p>
-            </div>
-            <p>₹599</p>
+            {cartItems.map((cartItemIndex, index) => (
+              <div className='item' key={index}>
+                <div className='item-details'>
+                  <p>{dishes[cartItemIndex].name}</p>
+                  <p className='gray-text'>₹{dishes[cartItemIndex].price}</p>
+                </div>
+                <div className='op-button'>
+                  <button onClick={() => addToCart(cartItemIndex)}>
+                    +
+                  </button>
+                  <button  onClick={() => removeFromCart(cartItemIndex)}>
+                    -
+                  </button>
+                </div>
+              </div>
+            ))}
             <div  className='subTotalTitle'>
               <p>Subtotal</p>
-              <p>₹799</p>
+              <p>₹ {calculateSubtotal()}</p>
             </div>
             <p className='gray-text'>Extra charges may apply</p>
             <button className='checkout_btn' >Checkout</button>
-          </div>
+        </div>
       </main>
-    </div>
+    
       <Footer/>
     </>
   );

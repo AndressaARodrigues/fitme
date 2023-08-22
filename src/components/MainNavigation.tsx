@@ -33,7 +33,7 @@ function MainNavigation() {
                 <div className="search-bar">
                   <input type="text" placeholder="Enter item or restaurant you are looking for" />
                   <button className="search-button">
-                    <i className="fas fa-search"></i>
+                     <i className="fa-solid fa-search fa-rotate-90"></i>
                   </button>
                 </div>
               </li>
